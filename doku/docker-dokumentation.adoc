@@ -38,7 +38,9 @@
 - `docker exec -it <container> /bin/bash`: startet eine _interaktive_ BASH im laufenden Container `<container>`, wir können uns also im Container bewegen und weitere Kommandos ausführen
 - `docker run --name <name> <image>`: Container starten und eigenen Namen `<name>` vergeben
 
+== Ports weiterleiten
 
+- `docker run -p 8080:80 nextcloud`: Startet einen Container aus dem Image `nextcloud` und leitet den Docker-internen Port `80` auf den Port `8080` des Hostsystems weiter
 
 
 
