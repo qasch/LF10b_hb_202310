@@ -1,0 +1,47 @@
+= Dokumentation Docker LF10b
+
+== Grundlegendes
+
+=== Image
+
+- Vorlage für beliebig viele Container
+- https://hub.docker.com ist eine Platform, auf der Docker Images gehostet werden, Images können von dort mit dem Kommando `docker pull <image>` heruntergeladen werden
+
+=== Container
+
+- wird aus einem Image gebaut
+- wird nach Bedarf gebaut, sind _Wegwerfprodukte_: Erledigen eine Aufgabe, werden danach gelöscht und bei Bedarf neu gebaut
+- ein Container erledigt in der Regel genau eine Aufgabe (Webserver, Datenbank etc.)
+- innerhalb eines Containers läuft also teilweise lediglich ein einzelner Prozess
+- wird ein Container gebaut, so erhält er vom Docker Daemon eine ID und einen Namen (beides automatisch generiert)
+
+==== Unterschied zu Virtuellen Maschinen
+
+- sind *keine* Virtuellen Maschinen
+- Container laufen dennoch isoliert vom Host-System (ähnlich wie VMs)
+- brauchen deutlich weniger Resourcen, da bei Containern nicht die komplette Hardware plus Betriebssystem virtualisiert wird
+- Container nutzen den Kernel, Hardware, OS etc. vom Host-System
+- Container starten sehr schnell
+- es können problemlos dutzende bis hunderte Container auf einem Host laufen
+
+== docker Kommando
+
+- `docker pull <image>`: lädt ein Image (in der Regel von https://hub.docker.com) herunter
+- `docker run <image>`: baut einen Container aus dem `<image>`, lädt es bei Bedarf herunter und startet den Container
+- `docker start <containername/containerid>`: startet einen bereits gebauten (aber gestoppten) Container
+- `docker stop <containername/containerid>`: stoptt einen Container
+- `docker ps`: zeigt alle *laufenden* Container an
+- `docker ps -a`: zeigt *alle* Container an, auch gestoppte
+- `docker ps --all`: zeigt *alle* Container an, auch gestoppte
+- `docker exec <container> <kommando>`: führt `<kommando>` im laufenden Container `<container>` aus
+- `<kommando>` ist dabei ein beliebiges Kommando, es muss lediglich im Container vorhanden/installiert sein
+- `docker exec -it <container> /bin/bash`: startet eine _interaktive_ BASH im laufenden Container `<container>`, wir können uns also im Container bewegen und weitere Kommandos ausführen
+- `docker run --name <name> <image>`: Container starten und eigenen Namen `<name>` vergeben
+
+
+
+
+
+
+
+
