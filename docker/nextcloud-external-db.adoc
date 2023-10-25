@@ -2,7 +2,9 @@
 
 == Verzeichnisse erstellen bzw. vorhandene löschen
 
-Achtung: Eventuell vorhanden Volumes vor dem ersten Start löschen und neu erstellen.
+Achtung: Eventuell vorhanden Volumes vor dem ersten Start löschen und neu erstellen. 
+
+Wurde der Container bereits einmal gestartet, wurden hier auch MySQL-User und Passwort eingetragen. Diese werden durch die Umgebungsvariablen dann nicht mehr verändert. Daher *vor dem ersten* Start am besten beide Volumes löchen.
 
  sudo rm -r ~/docker/mariadb
  sudo rm -r ~/docker/nextcloud
@@ -10,11 +12,15 @@ Achtung: Eventuell vorhanden Volumes vor dem ersten Start löschen und neu erste
  mkdir ~/docker/mariadb
  mkdir ~/docker/nextcloud
 
+Wurden beide Container erfolgreich gestartet, und der Zugriff funtkoniert, sollten die Volumes natürlich erhalten bleiben um die Daten persistent zu speichern.
+
 == Netzwerk erstellen
 
  docker network create db 
 
 == Datenbank Container starten
+
+Zugangsdaten sind nur ein Beispiel und sollten angepasst werden.
 
  docker run --detach --name nextcloud_db  \
  -v ~/docker/mariadb:/var/lib/mysql \
@@ -27,6 +33,8 @@ Achtung: Eventuell vorhanden Volumes vor dem ersten Start löschen und neu erste
 
 == Nextcloud Container starten
 
+Zugangsdaten müssen sich mit denen des Datenbank Containers decken.
+
  docker run -p 80:80 \
  -v ~/docker/nextcloud:/var/www/html \
  -e NEXTCLOUD_ADMIN_USER=kai \
@@ -38,3 +46,5 @@ Achtung: Eventuell vorhanden Volumes vor dem ersten Start löschen und neu erste
  -e MYSQL_HOST=nextcloud_db \
  --network=db \
  -d --rm nextcloud
+
+
