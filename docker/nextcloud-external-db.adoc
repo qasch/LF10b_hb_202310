@@ -1,0 +1,40 @@
+= Nextcloud Container mit externer Datenbank
+
+== Verzeichnisse erstellen bzw. vorhandene löschen
+
+Achtung: Eventuell vorhanden Volumes vor dem ersten Start löschen und neu erstellen.
+
+ sudo rm -r ~/docker/mariadb
+ sudo rm -r ~/docker/nextcloud
+
+ mkdir ~/docker/mariadb
+ mkdir ~/docker/nextcloud
+
+== Netzwerk erstellen
+
+ docker network create db 
+
+== Datenbank Container starten
+
+ docker run --detach --name nextcloud_db  \
+ -v ~/docker/mariadb:/var/lib/mysql \
+ --env MARIADB_USER=cloudius \
+ --env MARIADB_PASSWORD=cloudiuspw \
+ --env MARIADB_DATABASE=nextcloud \
+ --env MARIADB_ROOT_PASSWORD=rootpw \
+ --network=db \
+ --rm mariadb:10.6
+
+== Nextcloud Container starten
+
+ docker run -p 80:80 \
+ -v ~/docker/nextcloud:/var/www/html \
+ -e NEXTCLOUD_ADMIN_USER=kai \
+ -e NEXTCLOUD_ADMIN_PASSWORD=kai \
+ -e NEXTCLOUD_TRUSTED_DOMAINS=192.168.100.184 \
+ -e MYSQL_DATABASE=nextcloud \
+ -e MYSQL_USER=cloudius \
+ -e MYSQL_PASSWORD=cloudiuspw \
+ -e MYSQL_HOST=nextcloud_db \
+ --network=db \
+ -d --rm nextcloud
