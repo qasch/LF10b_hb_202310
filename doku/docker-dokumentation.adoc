@@ -41,6 +41,59 @@
 == Ports weiterleiten
 
 - `docker run -p 8080:80 nextcloud`: Startet einen Container aus dem Image `nextcloud` und leitet den Docker-internen Port `80` auf den Port `8080` des Hostsystems weiter
+- *Achtung*: Falls der Port auf dem Host bereits von einem anderen Service (regulär oder als anderer Docker Container) genutzt wird, kommt es beim Start eines Containers zu einer Fehlermeldung(`Port already allocated`, `Adress already in use`).
+
+== System aufräumen 
+
+Alle gestoppten Container und zusätzlich nicht benötigte/unvollständige (_Dangling_) Images, Netzwerke etc. Vorhanden intakte Images bleiben erhalten. 
+
+ docker system prune
+
+Es wird nichts gelöscht, was noch benötigt werden kann. Sicher zu benutzen.
+
+=== Container löschen
+
+Nur gestoppte Container können gelöscht werden.
+
+ docker rm <containername/containerid>
+
+=== Iamges löschen
+
+ docker rmi <image:tag>
+
+== Logs
+
+Container produzieren Log-Dateien. Diese sind direkt ersichtlich wenn wir einen Container im Vordergrund starten (also nicht mit der Option `-d`).
+
+Log Dateien können aber auch mit dem folgendem Kommando angezeigt werden:
+
+ docker logs <containername/containerid>
+
+Mit der Option `-f` können die Log Dateien _beobachtet_ werden, es werden also laufend neue Einträge angezeigt:
+
+ docker logs -f <containername/containerid>
+
+== Volumes
+
+Um Daten persistent vorhalten zu können (so dass bestimmte Daten auch nach dem Neu-Erstellen eines Containers noch vorhanden sind) können _Volumes_ verwendet werden.
+
+Z.B. können wir ein beliebiegs Verzeichnis auf dem Host System mit einem beliebigen Verzeichnis innerhalb eines Docker Containers verbinden. Die Verzeichnisse werden dabei _gespiegelt_.
+
+Änderungen in einem Verzeichnis werden direkt auf das andere übertragen.
+
+ docker run -v </pfad/zum/hostverzeichnis>:</pfad/zum/containerverzeichnis> <image>
+
+== Umgebungsvariablen
+
+Um einen Container bereits beim Start/Bau auf eine bestimmte Art zu konfigurieren, können vom Image bereitgestellte Umgebungsvariablen genutzt werden. 
+
+Diese sind unterschiedlich von Container zu Container und können in der Dokumentation des Images (z.B. auf `hub.docker.com`) eingesehen werden.
+
+ docker run -e NAME_ENV_1=wert_env_1 -e NAME_ENV_2=wert_env_2 <image>
+
+
+
+
 
 
 
