@@ -3,17 +3,50 @@
 - hosts: all
   become: yes
   vars:
+    user: tux
+    homedir: "/home/{{ user }}"
+    nextcloud_dir: "{{ homedir }}/docker/nextcloud"
+    server_ip: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
 
   tasks:
 
     - name: Install docker, containerd, docker.io and runc from standard repositories
+      package:
+        name:
+          - docker
+          - docker.io
+          - containerd
+          - runc
+        state: latest
 
     - name: Install docker-compose from standard repositories
+      package:
+        name:
+          - docker-compose
+        state: latest
 
     - name: Create target directory for docker containers
+      file: 
+        path: '{{ nextcloud_dir }}'
+        state: directory
 
     - name: Copy docker-compose.yml to target directory
+      template:
+        src: files/docker-compose.yml.j2
+        dest: '{{ nextcloud_dir }}/docker-compose.yml'
+        owner: '{{ user }}'
+        group: '{{ user }}'
+        mode: '0644'
 
     - name: Copy nginx.conf to target directory
+      copy:
+        src: files/nginx.conf
+        dest: '{{ nextcloud_dir }}'
+        owner: '{{ user }}'
+        group: '{{ user }}'
+        mode: '0644'
 
     - name: Start containers
+      shell:
+        chdir: '{{ nextcloud_dir }}'
+        cmd: 'docker-compose up -d'
