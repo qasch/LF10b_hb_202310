@@ -13,6 +13,11 @@
         path: "{{ homedir }}/documents"
         state: directory
 
+    - name: Create emtpy file inside 'documents' directory
+      file:
+        path: "{{ homedir }}/documents/emptyfile.txt"
+        state: touch
+
     - name: Install basic packages
       package:
         name:
