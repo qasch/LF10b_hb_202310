@@ -1,0 +1,19 @@
+---
+
+- hosts: all
+  become: yes
+  vars:
+
+  tasks:
+
+    - name: Install docker, containerd, docker.io and runc from standard repositories
+
+    - name: Install docker-compose from standard repositories
+
+    - name: Create target directory for docker containers
+
+    - name: Copy docker-compose.yml to target directory
+
+    - name: Copy nginx.conf to target directory
+
+    - name: Start containers
