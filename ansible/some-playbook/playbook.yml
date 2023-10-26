@@ -40,3 +40,7 @@
         name: sshd.service
         state: restarted
 
+    - name: Example use of the shell module
+      shell: 
+        chdir: "{{ homedir }}/documents"
+        cmd: 'touch file-from-shell-module'
